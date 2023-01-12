@@ -8,6 +8,23 @@ resource "aws_key_pair" "ansible" {
   }
 }
 
+module "key-pair" {
+  source  = "terraform-aws-modules/key-pair/aws"
+
+  key_name = "ansible-module"
+  create_private_key = true
+}
+
+resource "local_file" "ansible-module-public-key" {
+  filename = "public_key"
+  content = module.key-pair.public_key_pem
+}
+
+resource "local_file" "ansible-module-private-key" {
+  filename = "private_key"
+  content = module.key-pair.private_key_pem
+}
+
 resource "aws_instance" "terraform-gitlab-docker-runner" {
   ami                         = "ami-074cc9cf7a6bfbd02"
   instance_type               = "c6g.medium"
