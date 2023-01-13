@@ -21,7 +21,7 @@ resource "aws_instance" "terraform-gitlab-docker-runner" {
   }
 
   tags = {
-    Name      = "gitlab-docker-runner"
+    Name      = "terraform-gitlab-docker-runner"
     ManagedBy = "Terraform"
   }
 }
