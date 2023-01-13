@@ -11,6 +11,7 @@ resource "aws_key_pair" "ansible" {
 resource "aws_instance" "terraform-gitlab-docker-runner" {
   ami                         = "ami-074cc9cf7a6bfbd02"
   instance_type               = "c6g.medium"
+  count                       = 2
   key_name                    = aws_key_pair.ansible.id
   vpc_security_group_ids      = ["sg-0ecbf0cc9789639b8"]
   subnet_id                   = "subnet-0add22dd44185ea41"
