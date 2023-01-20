@@ -34,6 +34,12 @@ variable "user_data_replace_on_change" {
   default     = true
 }
 
+variable "additional_tags" {
+  description = "Additional tags to apply to the resources"
+  type        = map(string)
+  default     = {}
+}
+
 variable "gitlab_url" {
   description = "Gitlab URL"
   type        = string

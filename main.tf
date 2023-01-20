@@ -20,7 +20,10 @@ resource "aws_key_pair" "this" {
   key_name   = "gitlab-docker-runner"
   public_key = var.ssh_public_key
 
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    var.additional_tags,
+  )
 }
 
 resource "aws_instance" "this" {
@@ -34,5 +37,8 @@ resource "aws_instance" "this" {
   user_data                   = local.runner_user_data
   user_data_replace_on_change = var.user_data_replace_on_change
 
-  tags = local.tags
+  tags = merge(
+    local.tags,
+    var.additional_tags,
+  )
 }
