@@ -14,19 +14,21 @@ locals {
   })
 }
 
-resource "aws_key_pair" "gitlab_docker_runner" {
-  count      = var.ssh_public_key != null ? 1 : 0
+resource "aws_key_pair" "this" {
+  count = var.ssh_public_key != null ? 1 : 0
+
   key_name   = "gitlab-docker-runner"
   public_key = var.ssh_public_key
 
   tags = local.tags
 }
 
-resource "aws_instance" "gitlab_docker_runner" {
-  count                       = var.instance_count
+resource "aws_instance" "this" {
+  count = var.instance_count
+
   ami                         = var.ami_id
   instance_type               = var.instance_type
-  key_name                    = var.ssh_public_key != null ? aws_key_pair.gitlab_docker_runner[0].key_name : null
+  key_name                    = var.ssh_public_key != null ? aws_key_pair.this[0].key_name : null
   vpc_security_group_ids      = var.vpc_security_group_ids
   subnet_id                   = var.subnet_id
   user_data                   = local.runner_user_data
