@@ -1,28 +1,36 @@
-resource "aws_key_pair" "ansible" {
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDMI/oUO7c6QPEUhjQktSRnLDp6VX1IRBzQH9CB4l30C9BBKSS2rhLBkEYopJQkKbFeWbwxEMPL/QWdsOAQnsCTujGAbUMZ8Yepe6kk22nOsvIjsfO+yxptJOUxX3xFmWp2aDr/A/wxAopr80vsI9QpaP86DYSZUimlUxoXS2JjPHbpPC2UICj7FVLqmM4BjxTJUuFoy4664htdtuNNTO5X98DRWfHsZj9mzMeKcxgf7sV1t8el3lC0Yi2qoOs+K7iSlA81YFhc9r7rs+BRZSDrBykiu5ImFdasfjaG7q2eUG0ypO22FT8FPIz7c3CZTTX/I+W2BBWFQu3YlCjUKFuxGpL6ApNQMNsvzvKsSdJMsVFKREgMkRR9JmbTz52qEdc2zuSROOrH0Ov/NVko4Daj+B3seUeCqZTM4Uy7/aP+k/ZsHijOFs4X3u69gdN8CH8/BVUefknfNksc317E40F3WeWfMmyyBv0tKKc8OffFu0tdddG2BKXm/f4mQM7fD5s= ansible"
-  key_name   = "ansible"
-
+locals {
   tags = {
-    Name      = "ansible"
+    Name      = "gitlab-docker-runner"
     ManagedBy = "Terraform"
   }
+  runner_user_data = templatefile("templates/runner.tftpl", {
+    gitlab_url                = var.gitlab_url
+    runner_registration_token = var.runner_registration_token
+    docker_image              = var.docker_image
+    runner_description        = var.runner_description
+    runner_tags               = "\"${join(", ", var.runner_tags)}\""
+    run_untagged_jobs         = var.run_untagged_jobs
+    runner_locked             = var.runner_locked
+  })
 }
 
-resource "aws_instance" "terraform-gitlab-docker-runner" {
-  ami                         = "ami-074cc9cf7a6bfbd02"
-  instance_type               = "c6g.medium"
-  count                       = 2
-  key_name                    = aws_key_pair.ansible.id
-  vpc_security_group_ids      = ["sg-0ecbf0cc9789639b8"]
-  subnet_id                   = "subnet-0add22dd44185ea41"
-  associate_public_ip_address = false
+resource "aws_key_pair" "gitlab_docker_runner" {
+  count      = var.ssh_public_key != null ? 1 : 0
+  key_name   = "gitlab-docker-runner"
+  public_key = var.ssh_public_key
 
-  provisioner "local-exec" {
-    command = "ansible-playbook playbooks/gitlab_runner.yaml -i ${self.private_ip}, -u ubuntu --private-key '/Users/rajattomar/.ssh/ansible/id_rsa' --extra-vars 'ip=${self.private_ip}'"
-  }
+  tags = local.tags
+}
 
-  tags = {
-    Name      = "terraform-gitlab-docker-runner"
-    ManagedBy = "Terraform"
-  }
+resource "aws_instance" "gitlab_docker_runner" {
+  count                       = var.instance_count
+  ami                         = var.ami_id
+  instance_type               = var.instance_type
+  key_name                    = var.ssh_public_key != null ? aws_key_pair.gitlab_docker_runner[0].key_name : null
+  vpc_security_group_ids      = var.vpc_security_group_ids
+  subnet_id                   = var.subnet_id
+  user_data                   = local.runner_user_data
+  user_data_replace_on_change = var.user_data_replace_on_change
+
+  tags = local.tags
 }
