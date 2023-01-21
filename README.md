@@ -1,1 +1,1 @@
-# gitlab-runner
+# gitlab-docker-runner
