@@ -28,12 +28,6 @@ variable "subnet_id" {
   default     = ""
 }
 
-variable "user_data_replace_on_change" {
-  description = "Recreate the instance when the user data changes"
-  type        = bool
-  default     = true
-}
-
 variable "additional_tags" {
   description = "Additional tags to apply to the resources"
   type        = map(string)

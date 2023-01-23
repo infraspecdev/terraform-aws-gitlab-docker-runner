@@ -3,7 +3,7 @@ locals {
     Name      = "gitlab-docker-runner"
     ManagedBy = "Terraform"
   }
-  runner_user_data = templatefile("templates/runner.tftpl", {
+  runner_user_data = templatefile("${path.module}/templates/runner.tftpl", {
     gitlab_url                = var.gitlab_url
     runner_registration_token = var.runner_registration_token
     docker_image              = var.docker_image
@@ -35,8 +35,7 @@ resource "aws_instance" "this" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   subnet_id                   = var.subnet_id
   user_data                   = local.runner_user_data
-  user_data_replace_on_change = var.user_data_replace_on_change
-
+  user_data_replace_on_change = true
   tags = merge(
     local.tags,
     var.additional_tags,
