@@ -19,6 +19,10 @@ module "gitlab_docker_runner" {
 }
 ```
 
+## Examples
+
+[Example](examples)
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
