@@ -1,5 +1,5 @@
 .idea/
 terraform.tfstate*
 .terraform*
-examples/terraform.tfstate*
-examples/.terraform*
+examples/gitlab-docker-runner-setup/terraform.tfstate*
+examples/gitlab-docker-runner-setup/.terraform*
