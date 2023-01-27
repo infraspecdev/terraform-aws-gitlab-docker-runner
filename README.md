@@ -21,7 +21,7 @@ module "gitlab_docker_runner" {
 
 ## Examples
 
-[Example](examples)
+[Example](examples/gitlab-docker-runner-setup)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
