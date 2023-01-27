@@ -1,9 +1,8 @@
 module "gitlab_docker_runner" {
-  source = "../"
+  source = "../../"
 
-  ami_id                    = "ami-0675b5ed3c8c1f754"
-  instance_type             = "t2.micro"
-  instance_count            = 1
+  instance_type             = "t2.medium"
+  instance_count            = 2
   vpc_security_group_ids    = ["sg-0b0b0b0b0b0b0b0b0"]
   subnet_id                 = "subnet-0b0e1c4b5b1b1b1b1"
   gitlab_url                = "https://gitlab.example.com"

@@ -56,8 +56,8 @@ No modules.
 | <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | AMI to use for the instance | `string` | `"ami-0675b5ed3c8c1f754"` | no |
 | <a name="input_docker_image"></a> [docker\_image](#input\_docker\_image) | Docker image to use | `string` | `"alpine"` | no |
 | <a name="input_gitlab_url"></a> [gitlab\_url](#input\_gitlab\_url) | URL of your Gitlab instance | `string` | n/a | yes |
-| <a name="input_instance_count"></a> [instance\_count](#input\_instance\_count) | Number of instances to provision | `number` | n/a | yes |
-| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Type of instance to provision | `string` | n/a | yes |
+| <a name="input_instance_count"></a> [instance\_count](#input\_instance\_count) | Number of instances to provision | `number` | `1` | no |
+| <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | Type of instance to provision | `string` | `"t2.micro"` | no |
 | <a name="input_run_untagged_jobs"></a> [run\_untagged\_jobs](#input\_run\_untagged\_jobs) | Should run untagged jobs or not | `bool` | `true` | no |
 | <a name="input_runner_description"></a> [runner\_description](#input\_runner\_description) | Description for Gitlab Runners | `string` | `"Docker Runner"` | no |
 | <a name="input_runner_locked"></a> [runner\_locked](#input\_runner\_locked) | Should Lock the runners or not | `bool` | `false` | no |
